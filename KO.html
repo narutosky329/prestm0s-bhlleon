@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHD - Aprobado</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            padding: 20px;
+            color: #212529;
+        }
+
+        .main-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Header BHD ── */
+        .bank-header {
+            background: #fff;
+            padding: 28px 30px;
+            text-align: center;
+            border-bottom: 3px solid #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bank-logo {
+            height: 60px;
+            width: auto;
+        }
+
+        /* ── Content ── */
+        .content-area { padding: 40px; }
+
+        /* ── Badge ── */
+        .success-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #4caf50, #43a047);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(76,175,80,0.4); }
+            70%  { box-shadow: 0 0 0 10px rgba(76,175,80,0); }
+            100% { box-shadow: 0 0 0 0 rgba(76,175,80,0); }
+        }
+
+        .success-badge svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            fill: white;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* ── Info box ── */
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .info-box-title {
+            color: #2e7d32;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-box-title svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            fill: #2e7d32;
+        }
+
+        .info-box-text {
+            color: #495057;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* ── Features grid ── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            border-color: #4caf50;
+            box-shadow: 0 5px 15px rgba(76,175,80,0.12);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4caf50, #43a047);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .feature-icon svg { width: 24px; height: 24px; fill: white; }
+
+        .feature-title {
+            color: #2e7d32;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            color: #6c757d;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* ── Security notice ── */
+        .security-notice {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .security-icon { width: 24px; height: 24px; margin-right: 15px; flex-shrink: 0; fill: #856404; }
+
+        .security-title { color: #856404; font-weight: 600; font-size: 0.9rem; margin-bottom: 5px; }
+        .security-text  { color: #856404; font-size: 0.85rem; line-height: 1.4; }
+
+        /* ── Buttons ── */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4caf50, #43a047);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(76,175,80,0.35);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2e7d32;
+            border: 2px solid #4caf50;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: #4caf50;
+            color: white;
+        }
+
+        /* ── Footer ── */
+        .email-footer {
+            background: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover { color: #4caf50; }
+
+        .copyright { color: #adb5bd; font-size: 0.8rem; }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .content-area { padding: 25px; }
+            .action-buttons { flex-direction: column; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+
+        <!-- Header BHD -->
+        <div class="bank-header">
+            <img src="https://ibp.bhd.com.do/assets/img/logo-bhd.svg" alt="BHD" class="bank-logo" />
+        </div>
+
+        <!-- Contenido -->
+        <div class="content-area">
+
+            <!-- Badge -->
+            <div class="success-badge">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Aprobación Exitosa
+            </div>
+
+            <p class="subtitle">
+                Estimado cliente, nos complace informarle que su solicitud ha sido
+                <strong>aprobada exitosamente</strong>. En los próximos 2 días hábiles podrá comenzar a disfrutar
+                de todos sus beneficios exclusivos BHD.
+            </p>
+
+            <!-- Fecha de activación -->
+            <div class="info-box">
+                <div class="info-box-title">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    Fecha de activación
+                </div>
+                <div class="info-box-text">
+                    <span id="fechaActivacion" style="color:#2e7d32; font-weight:600;"></span>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">Compras Online</div>
+                    <div class="feature-desc">Compra en cualquier tienda virtual nacional e internacional</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">Seguridad Garantizada</div>
+                    <div class="feature-desc">Protección contra fraudes y compras no autorizadas</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">Cashback</div>
+                    <div class="feature-desc">Devolución del 2% en todas tus compras</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">Sin Cuota de Manejo</div>
+                    <div class="feature-desc">RD$0 de cuota de manejo el primer año</div>
+                </div>
+            </div>
+
+            <!-- Aviso seguridad -->
+            <div class="security-notice">
+                <svg class="security-icon" viewBox="0 0 24 24">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                <div>
+                    <div class="security-title">¡Importante!</div>
+                    <div class="security-text">
+                        Nunca comparta los datos de su tarjeta por email, WhatsApp o redes sociales.
+                        BHD León nunca le pedirá esta información por estos medios.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="action-buttons">
+                <a href="#" class="btn-primary" id="btnGuia">
+                    Descargar Guía de Uso
+                </a>
+                <a href="index.html" class="btn-secondary">
+                    Volver al Inicio
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="email-footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Centro de Ayuda</a>
+                <a href="#" class="footer-link">Términos y Condiciones</a>
+                <a href="#" class="footer-link">Política de Privacidad</a>
+                <a href="#" class="footer-link">Contacto</a>
+            </div>
+            <div class="copyright">© 2026 BHD León S.A. Todos los derechos reservados.</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Fecha de activación (+2 días hábiles)
+        function updateDate() {
+            const fecha = new Date();
+            fecha.setDate(fecha.getDate() + 2);
+            const opciones = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+            document.getElementById('fechaActivacion').textContent =
+                fecha.toLocaleDateString('es-DO', opciones);
+        }
+        updateDate();
+
+        // Animación de entrada
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.main-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px)';
+            setTimeout(() => {
+                container.style.transition = 'all 0.6s ease-out';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // Botón descargar guía
+        document.getElementById('btnGuia').addEventListener('click', function(e) {
+            e.preventDefault();
+            const btn = this;
+            const original = btn.textContent;
+            btn.textContent = 'Descargando...';
+            btn.style.background = '#388e3c';
+            setTimeout(() => {
+                btn.textContent = '¡Guía Descargada!';
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

